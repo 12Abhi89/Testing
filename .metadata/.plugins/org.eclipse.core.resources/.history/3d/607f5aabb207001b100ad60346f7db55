@@ -83,7 +83,7 @@ public class SolarBatteryCharger {
 				Select Temp=new Select(dropdown.get(3));
 				Temp.selectByValue("360");
 				
-				driver.findElement(By.xpath(".//button[@ng-class=\"getComToArr(data.class)\" and @ng-click=\"submitAll($event,data.allattrib)\" and @class=\"btn btn-primary btn-element  fat-btn\"]")).submit();
+				driver.findElement(By.xpath("//button[@ng-class=\"getComToArr(data.class)\" and @ng-click=\"submitAll($event,data.allattrib)\" and @class=\"btn btn-primary btn-element  fat-btn\"]"));
 				/*
 				//Voc
 				driver.findElement(ByAngular.model("tnxmodel")).click();
