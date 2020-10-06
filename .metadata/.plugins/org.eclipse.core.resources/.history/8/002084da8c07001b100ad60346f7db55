@@ -1,0 +1,67 @@
+package solar_Battery_Charger;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.paulhammant.ngwebdriver.NgWebDriver;
+import com.paulhammant.ngwebdriver.ByAngular;
+
+import java.util.concurrent.TimeUnit;
+
+public class SolarBatteryCharger {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		
+		/*
+		<tr ng-repeat="form in Forms" class="ng-scope">
+		<td class="ng-binding">ISL81601-US011REFZ- Solar Battery Charger</td>
+		<td class="ng-binding"></td>
+		<td class="text-center">
+		    <a href="/#!/user/form/?APP=5f12f3d2c555b026c55ae500&amp;FORM_ID=5f509ff4c555b01d49a35527" title="Run">
+		        <i class="material-icons">play_arrow</i>
+		        
+		    </a>
+		</td>
+		</tr>
+		*/
+				// TODO Auto-generated method stub
+				System.setProperty("webdriver.gecko.driver","C:\\Users\\ADMIN\\Tenxer\\AutoTesting\\Selenium_Jar_Files\\geckodriver.exe");
+				WebDriver driver=new FirefoxDriver();
+				JavascriptExecutor jsDriver=(JavascriptExecutor) driver;
+				NgWebDriver ngDriver=new NgWebDriver(jsDriver);
+				String pageurl = "https://renesas.evmlabs.com/#!/";
+				driver.get(pageurl);
+				ngDriver.waitForAngularRequestsToFinish();
+				
+				//Login--------------
+				driver.manage().window().maximize();
+				driver.findElement(ByAngular.model("username")).sendKeys("abhishek@tenxertech.com");
+				driver.findElement(ByAngular.model("password")).sendKeys("4KSVHCgxc6p7dV2");
+				driver.findElement(ByAngular.buttonText("Login")).click();
+				Thread.sleep(10000);
+				
+				
+				//ngDriver.waitForAngularRequestsToFinish();
+				//
+				driver.findElement(ByAngular.repeater("form in Forms")).findElement(By.className("material-icons")).click();
+				Thread.sleep(15000);
+				
+				//
+				driver.switchTo().frame(0);
+				var wait = new WebDriverWait(driver,30);
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//html/body/div/div/div/nav/div/button/div/i")));
+				driver.findElement(By.xpath("//html/body/div/div/div/nav/div/button[@class='min-max-toggle btn btn--icon' and @aria-label='minimize chat window toggle']")).click();
+				 driver.switchTo().parentFrame();
+				 driver.findElement(By.xpath("//button[@class='wmClose notop']")).click();
+				
+			}
+
+
+	}
+
