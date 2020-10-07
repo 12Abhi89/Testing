@@ -1,0 +1,15 @@
+package solar_Battery_Charger;
+
+import java.io.File;
+
+import org.testng.annotations.DataProvider;
+
+public class loginTest {
+	@DataProvider
+	public object[][] UsernamAndPassword()
+	{
+		File loginData=new File("C:\\Users\\ADMIN\\Tenxer\\loginData.xlsx");
+		
+	}
+	
+}

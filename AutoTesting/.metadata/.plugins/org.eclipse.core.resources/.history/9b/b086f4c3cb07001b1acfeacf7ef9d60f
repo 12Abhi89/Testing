@@ -1,0 +1,25 @@
+package solar_Battery_Charger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.DataProvider;
+
+public class loginTest{
+	
+	@DataProvider
+	public Object[][] UsernamAndPassword() throws IOException
+	{
+		File loginData=new File("C:\\Users\\ADMIN\\Tenxer\\loginData.xlsx");
+		FileInputStream fis=new FileInputStream(loginData);
+		XSSFWorkbook wb=new XSSFWorkbook(fis);
+		XSSFSheet FirstSheet= wb.getSheetAt(0);
+		int a=FirstSheet.getPhysicalNumberOfRows();
+		return null;
+	}
+	
+}
