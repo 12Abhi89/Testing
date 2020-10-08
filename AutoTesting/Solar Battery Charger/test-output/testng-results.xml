@@ -2,12 +2,16 @@
 <testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-10-06T14:31:50Z" name="Default suite" finished-at="2020-10-06T14:32:25Z" duration-ms="35409">
+  <suite started-at="2020-10-08T07:09:53Z" name="Default suite" finished-at="2020-10-08T07:10:28Z" duration-ms="34994">
     <groups>
     </groups>
-    <test started-at="2020-10-06T14:31:50Z" name="Default test" finished-at="2020-10-06T14:32:25Z" duration-ms="35409">
+    <test started-at="2020-10-08T07:09:53Z" name="Default test" finished-at="2020-10-08T07:10:28Z" duration-ms="34994">
       <class name="solar_Battery_Charger.loginTest">
-        <test-method signature="LoginTest(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:solar_Battery_Charger.loginTest@2fd6b6c7]" started-at="2020-10-06T14:31:50Z" name="LoginTest" data-provider="LoginData" finished-at="2020-10-06T14:32:08Z" duration-ms="17619" status="PASS">
+        <test-method is-config="true" signature="setup()[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:09:53Z" name="setup" finished-at="2020-10-08T07:10:05Z" duration-ms="11374" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="LoginTest(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:10:05Z" name="LoginTest" data-provider="LoginData" finished-at="2020-10-08T07:10:09Z" duration-ms="4686" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -28,7 +32,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- LoginTest -->
-        <test-method signature="LoginTest(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:solar_Battery_Charger.loginTest@2fd6b6c7]" started-at="2020-10-06T14:32:08Z" name="LoginTest" data-provider="LoginData" finished-at="2020-10-06T14:32:25Z" duration-ms="17052" status="PASS">
+        <test-method is-config="true" signature="destroy()[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:10:09Z" name="destroy" finished-at="2020-10-08T07:10:10Z" duration-ms="1100" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- destroy -->
+        <test-method is-config="true" signature="setup()[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:10:10Z" name="setup" finished-at="2020-10-08T07:10:22Z" duration-ms="11680" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="LoginTest(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:10:22Z" name="LoginTest" data-provider="LoginData" finished-at="2020-10-08T07:10:27Z" duration-ms="4595" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -49,6 +61,10 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- LoginTest -->
+        <test-method is-config="true" signature="destroy()[pri:0, instance:solar_Battery_Charger.loginTest@15b204a1]" started-at="2020-10-08T07:10:27Z" name="destroy" finished-at="2020-10-08T07:10:28Z" duration-ms="911" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- destroy -->
       </class> <!-- solar_Battery_Charger.loginTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->

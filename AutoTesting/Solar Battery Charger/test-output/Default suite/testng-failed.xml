@@ -5,7 +5,9 @@
     <classes>
       <class name="solar_Battery_Charger.loginTest">
         <methods>
-          <include name="LoginTest" invocation-numbers="0"/>
+          <include name="LoginTest" invocation-numbers="1"/>
+          <include name="setup"/>
+          <include name="destroy"/>
         </methods>
       </class> <!-- solar_Battery_Charger.loginTest -->
     </classes>
