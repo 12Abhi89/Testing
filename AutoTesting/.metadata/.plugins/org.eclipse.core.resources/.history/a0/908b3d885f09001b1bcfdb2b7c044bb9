@@ -135,19 +135,25 @@ public class ConfigureTest {
 			System.out.println("==============================================\n"+x.getText());
 		}
 		
-		//wait until MPPT Button is available to press
+		Thread.sleep(15000);
+		
+		//wait.until(ExpectedConditions.elementToBeClickable(By.xpath(".//div[@class=\"form-group\"]/div[@class=\"ng-scope\"]/button[@class=\"btn btn-primary btn-element  fat-btn\"]")));
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")));
-		
-		//This list contains MPPT button and Battery Discharge button
-		List<WebElement> MPPTandBattery=driver.findElements(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]"));
-		System.out.print("MPPT="+MPPTandBattery.size());
-		
-		//MPPT Button will be pressed
-		MPPTandBattery.get(0).click();
-		
-		//Press Battery Discharge Button
-		//MPPTandBattery.get(1).click();
-		
+		driver.findElement(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")).click();
+		//System.out.println("st ="+ st);
+		/*WebElement i=driver.findElement(By.xpath("//div[@ng-if=\"options\" and @class=\"ng-scope\"]"));
+		System.out.println("gh");
+		wait.until(ExpectedConditions.invisibilityOf(i));
+		System.out.println("hg");
+		if(!i.getText().isEmpty())
+		{
+			System.out.println("Graph Exist");
+		}
+		else
+		{
+			System.out.println("Graph Doesn't Exist");
+		}
+		*/
 		System.out.println("End");
 	}
 
