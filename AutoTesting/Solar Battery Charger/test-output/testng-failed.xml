@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="solar_Battery_Charger.loginTest">
+      <class name="solar_Battery_Charger.ConfigureTest">
         <methods>
-          <include name="LoginTest" invocation-numbers="1"/>
+          <include name="configTest"/>
           <include name="setup"/>
           <include name="destroy"/>
         </methods>
-      </class> <!-- solar_Battery_Charger.loginTest -->
+      </class> <!-- solar_Battery_Charger.ConfigureTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
