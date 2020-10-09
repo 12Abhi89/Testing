@@ -2,20 +2,20 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-10-08T12:30:45Z" name="Default suite" finished-at="2020-10-08T12:32:04Z" duration-ms="79233">
+  <suite started-at="2020-10-09T11:29:01Z" name="Default suite" finished-at="2020-10-09T11:30:31Z" duration-ms="89849">
     <groups>
     </groups>
-    <test started-at="2020-10-08T12:30:45Z" name="Default test" finished-at="2020-10-08T12:32:04Z" duration-ms="79233">
+    <test started-at="2020-10-09T11:29:01Z" name="Default test" finished-at="2020-10-09T11:30:31Z" duration-ms="89849">
       <class name="solar_Battery_Charger.ConfigureTest">
-        <test-method is-config="true" signature="setup()[pri:0, instance:solar_Battery_Charger.ConfigureTest@2f177a4b]" started-at="2020-10-08T12:30:45Z" name="setup" finished-at="2020-10-08T12:30:56Z" duration-ms="11301" status="PASS">
+        <test-method is-config="true" signature="setup()[pri:0, instance:solar_Battery_Charger.ConfigureTest@147ed70f]" started-at="2020-10-09T11:29:01Z" name="setup" finished-at="2020-10-09T11:29:13Z" duration-ms="11910" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="configTest()[pri:0, instance:solar_Battery_Charger.ConfigureTest@2f177a4b]" started-at="2020-10-08T12:30:56Z" name="configTest" finished-at="2020-10-08T12:32:04Z" duration-ms="67895" status="PASS">
+        <test-method signature="configTest()[pri:0, instance:solar_Battery_Charger.ConfigureTest@147ed70f]" started-at="2020-10-09T11:29:13Z" name="configTest" finished-at="2020-10-09T11:30:31Z" duration-ms="77905" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- configTest -->
-        <test-method is-config="true" signature="destroy()[pri:0, instance:solar_Battery_Charger.ConfigureTest@2f177a4b]" started-at="2020-10-08T12:32:04Z" name="destroy" finished-at="2020-10-08T12:32:04Z" duration-ms="0" status="PASS">
+        <test-method is-config="true" signature="destroy()[pri:0, instance:solar_Battery_Charger.ConfigureTest@147ed70f]" started-at="2020-10-09T11:30:31Z" name="destroy" finished-at="2020-10-09T11:30:31Z" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- destroy -->

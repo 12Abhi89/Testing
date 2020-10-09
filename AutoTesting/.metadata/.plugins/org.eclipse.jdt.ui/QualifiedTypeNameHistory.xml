@@ -34,4 +34,5 @@
     <fullyQualifiedTypeName name="org.testng.annotations.AfterTest"/>
     <fullyQualifiedTypeName name="org.testng.annotations.BeforeMethod"/>
     <fullyQualifiedTypeName name="org.testng.annotations.AfterMethod"/>
+    <fullyQualifiedTypeName name="org.openqa.selenium.By"/>
 </qualifiedTypeNameHistroy>
