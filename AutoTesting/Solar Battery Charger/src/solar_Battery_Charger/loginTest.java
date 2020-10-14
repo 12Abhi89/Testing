@@ -33,7 +33,7 @@ public class loginTest{
 	@BeforeMethod
 	public void setup()
 	{
-		System.setProperty("webdriver.gecko.driver","C:\\Users\\ADMIN\\Tenxer\\AutoTesting\\Selenium_Jar_Files\\geckodriver.exe");
+		System.setProperty("webdriver.gecko.driver","C:\\Users\\Abhi\\Tenxer\\AutoTesting\\Selenium_Jar_Files\\geckodriver.exe");
 		driver=new FirefoxDriver();
 		jsDriver=(JavascriptExecutor) driver;
 		ngDriver=new NgWebDriver(jsDriver);
@@ -86,7 +86,7 @@ public class loginTest{
 	@DataProvider(name="LoginData")
 	public Object[][] UsernamAndPassword() throws IOException
 	{
-		File loginData=new File("C:\\Users\\ADMIN\\Tenxer\\TestingData\\loginData.xlsx");
+		File loginData=new File("C:\\Users\\Abhi\\Tenxer\\TestingData\\loginData.xlsx");
 		FileInputStream fis=new FileInputStream(loginData);
 		XSSFWorkbook workbook=new XSSFWorkbook(fis);
 		XSSFSheet FirstSheet= workbook.getSheetAt(0);
