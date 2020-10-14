@@ -34,12 +34,15 @@ import com.paulhammant.ngwebdriver.ByAngularModel;
 import com.paulhammant.ngwebdriver.NgWebDriver;
 
 public class ConfigureTest {
-	
 	protected WebDriver driver;
 	protected JavascriptExecutor jsDriver;
 	protected NgWebDriver ngDriver;
 	protected String pageurl = "https://renesas.evmlabs.com/#!/";
 	protected WebDriverWait wait;
+	public static String LoginPage="Tenxer - Login";
+	public static String EvmSelectingPage="Tenxer -";
+	public static String SBCEvmLanPage="Tenxer - ISL81601-US011REFZ- Solar Battery Charger";
+	
 	
 	@BeforeMethod
 	public void setup() 
@@ -56,6 +59,12 @@ public class ConfigureTest {
 		driver.get(pageurl);
 		driver.manage().window().maximize();
 		ngDriver.waitForAngularRequestsToFinish();
+		//Login Page
+		driver.findElement(ByAngular.model("username")).sendKeys("abhishek@tenxertech.com");
+		driver.findElement(ByAngular.model("password")).sendKeys("4KSVHCgxc6p7dV2");
+		driver.findElement(ByAngular.buttonText("Login")).click();
+		ngDriver.waitForAngularRequestsToFinish();
+		Assert.assertEquals(driver.getTitle(), EvmSelectingPage,"Home page is not loaded");
 	}
 	
 	@AfterMethod
@@ -114,23 +123,44 @@ public class ConfigureTest {
 		int i=0;
 		for(WebElement c:Console)
 		{
-			//System.out.println("##############################\n"+c.getText());
 			con[i]=c.getText().toString();
 			i++;
 		}
 		return con;
 	}
-	public String MPPTStatus()
+	public int MPPTStatus()
 	{
-		return driver.findElement(By.id("tab_12_21_41")).findElement(By.xpath(".//div[@ng-if=\"value.label\" and @class=\"led-label ng-binding ng-scope\" and @ng-bind-html=\"value.label | newlines\"]")).getText();
-		
+		String MPPT=driver.findElement(By.id("tab_12_21_41")).findElement(By.xpath(".//div[@ng-if=\"value.label\" and @class=\"led-label ng-binding ng-scope\" and @ng-bind-html=\"value.label | newlines\"]")).getText();
+		if(MPPT.equals("MPPT ON"))
+		{
+			return 1;
+		}
+		else if(MPPT.equals("MPPT OFF"))
+		{
+			return 0;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	public int BatteryStatus()
 	{
-		String BlinkingClass=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		String Class="led blinking";
-		if(Class.equalsIgnoreCase(BlinkingClass))
+		String ExpectedBlink="led blinking";
+		String ActualBlink="";
+		List<WebElement> batterystats=driver.findElements(By.xpath(".//div[@ng-class=\"pos\" and @class=\"led-container d-flex ng-scope right\"]"));
+		String temp="";
+		for(WebElement w:batterystats)
+		{
+			temp=w.getText();
+			if(temp.equals("Battery Charging"))
+			{
+				//".//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]"
+			ActualBlink=w.findElement(By.xpath(".//div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
+			}
+		}
+		
+		if(ExpectedBlink.equals(ActualBlink))
 		{
 			return 1;
 		}
@@ -139,31 +169,54 @@ public class ConfigureTest {
 			return 0;
 		}
 	}
-	public void DischargeStatus()
-	{
-		
-		
-	}
 	
+	public int DischargeStatus()
+	{
+		//String ActualState="";
+		List<WebElement> batterystats=driver.findElements(By.xpath(".//div[@ng-class=\"pos\" and @class=\"led-container d-flex ng-scope right\"]"));
+		String temp="";
+		int i=-1;
+		for(WebElement w:batterystats)
+		{
+			temp=w.getText();
+			if(temp.equals("ON"))
+			{
+				i=1;
+				break;
+				//".//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]"
+				//ActualState=w.findElement(By.xpath(".//div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
+			}
+			else if(temp.equals("OFF"))
+			{
+				i=0;
+				break;
+			}
+		}
+		return i;
+	}
 	@Test(dataProvider="ConfigData")
 	public void configTest(String UserInputVoltage,String UserInputCurrent,String UserInputIrradiance ,String UserInputTemp) throws InterruptedException {
 		
 		
-		//Login Page
-		driver.findElement(ByAngular.model("username")).sendKeys("abhishek@tenxertech.com");
-		driver.findElement(ByAngular.model("password")).sendKeys("4KSVHCgxc6p7dV2");
-		driver.findElement(ByAngular.buttonText("Login")).click();
-		
 		//EVM Selecting page
+		try {
 		wait.until(ExpectedConditions.elementToBeClickable(ByAngular.repeater("form in Forms")));
+		}catch(Exception e)
+		{
+			throw new RuntimeException("waited 60sec in home page for rvm list to load");
+		}
 		driver.findElement(ByAngular.repeater("form in Forms")).findElement(By.className("material-icons")).click();
 		ngDriver.waitForAngularRequestsToFinish();
+		
 		//ISL81601-US011REFZ- Solar Battery Charger Page
+		Assert.assertEquals(driver.getTitle(), SBCEvmLanPage,"ISL81601-US011REFZ- Solar Battery Charger Page is not loaded");
 		//Switch to Eva chat bot
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(0));
 		String EvaPath="//html/body/div/div/div/nav/div/button[@class='min-max-toggle btn btn--icon' and @aria-label='minimize chat window toggle']";
+		
 		//waits to load Eva Chat bot
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(EvaPath)));
+		
 		//minimizes Eva Chat bot
 		Thread.sleep(5000);
 		driver.findElement(By.xpath(EvaPath)).click();
@@ -173,6 +226,7 @@ public class ConfigureTest {
 		
 		//Waits Till User guide close button is available
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='wmClose notop']")));
+		
 		//Minimizes user guide pop up
 		driver.findElement(By.xpath("//button[@class='wmClose notop']")).click();
 		
@@ -193,6 +247,7 @@ public class ConfigureTest {
 		dropdown.get(2).click();
 		Select Irradiance=new Select(dropdown.get(2));
 		Irradiance.selectByVisibleText(UserInputIrradiance);
+		
 		
 		//Selects input from temperature dropdown
 		dropdown.get(3).click();
@@ -232,46 +287,41 @@ public class ConfigureTest {
 		Assert.assertEquals(console[console.length-3], "Solar Panel Configuration Complete","During Configuring Inputs Console status");
 		
 		//condition 4:checking Battery status blinking or not
-		String ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		String ExpectedBatteryStatusBlink="led blinking";//class="led blinking" for blinking of battery charging 
-		Assert.assertEquals(ActualBatteryStatusBlink, ExpectedBatteryStatusBlink, "During Configuring inputs and Before pressing MPPT on Battery Status Should be blinking but its not blinkig");
-		//End of configure button----------------------------------------------------------------------------------------------------------
-		//Thread.sleep(5000);//battery charging for 5sec 
+		if(!(BatteryStatus()==1))
+		{
+			Assert.assertTrue(false, "After configuration Battery Charging status is not blinking");
+		}
 		
-		//wait until MPPT Button is available to press
+		//condition 5:MPPT Status is OFF
+		if(!(MPPTStatus()==0))
+		{
+			Assert.assertTrue(false,"After Configuration MPPT Status Should be off");
+		}
+		//End of configure button----------------------------------------------------------------------------------------------------------
+		
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")));
 		
 		//This list contains MPPT button and Battery Discharge button
 		List<WebElement> MPPTandBattery=driver.findElements(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]"));
-		System.out.print("\nMPPT= "+MPPTandBattery.size());
 		
-		ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		System.out.println("\nActualBatteryStatusBlink1="+ActualBatteryStatusBlink);
 		//MPPT On--------------------------------------------------------------------------
 		
 		//MPPT Button will be pressed
 		MPPTandBattery.get(0).click();
 		ngDriver.waitForAngularRequestsToFinish();
-		ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		System.out.println("\nActualBatteryStatusBlink2="+ActualBatteryStatusBlink);
 		//Condition 1
 		//waits till top right status bar show Ready
 		wait.until(ExpectedConditions.textToBe(By.xpath(".//li[@class=\"nav-item\"]/div[@class=\"nav-link active\"]/span[@class=\"ng-scope\"]"), ". Ready"));
-		
-		
-		ActualBatteryStatusBlink=driver.findElement(By.xpath(".//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		System.out.println("\nActualBatteryStatusBlink3="+ActualBatteryStatusBlink);
 		
 		Thread.sleep(5000);//charge the battery
 		
 		//Condition 2
 		//MPPT Button Status
-		String ActualMPPTStatus;
-		ActualMPPTStatus=MPPTStatus();//function which returns MPPT Status
-		System.out.println("\nMPPTStatus= " + ActualMPPTStatus);
-		Assert.assertEquals(ActualMPPTStatus, "MPPT ON","After MPPT button is ON 'MPPT Status' ");
-		ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		System.out.println("\nActualBatteryStatusBlink4="+ActualBatteryStatusBlink);
+		if(!(MPPTStatus()==1))
+		{
+			Assert.assertTrue(false,"After MPPT On button pressed MPPT Status Should be ON");
+		}
+		
 		
 		//Condition 3
 		//MPPT Status in console
@@ -279,54 +329,42 @@ public class ConfigureTest {
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ByAngular.repeater("op in outputTrans track by $index")));
 		console=Console();
 		Assert.assertEquals(console[console.length-1],ExpectedConsoleMPPTStatus,"After MPPT button is ON Console status ");//Checking is Console Showing MPPT is On
-		ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		System.out.println("\nActualBatteryStatusBlink5="+ActualBatteryStatusBlink);
 		
 		//condition 4:checking Battery status blinking or not
-		//WebElement some=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\" and contains(text(),'Battery Charging')]"));
-		//ActualBatteryStatusBlink=some.findElement(By.xpath("//div[@ng-class=\"{'blinking':value.is_blink == 1,'not-connected':DEVICE_CONNECTED == false}\"]")).getAttribute("class");
-		//ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		
-		
-		System.out.println("\nActualBatteryStatusBlink6="+ActualBatteryStatusBlink);
-		ExpectedBatteryStatusBlink="led blinking";//class="led blinking" for blinking of battery charging 
-		//Assert.assertEquals(ActualBatteryStatusBlink, ExpectedBatteryStatusBlink, "After MPPT on Battery Status Should be blinking but its not blinkig");
-		
+		if(!(BatteryStatus()==1))
+		{
+			Assert.assertTrue(false,"After MPPT On button pressed Battery Charging should be blinking");
+		}
 		
 		//End MPPT On--------------------------------------------------------------------------------------
 		
 		//Battery Discharge ---------------------------------------------------
+
+		//wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")));
+		jsDriver.executeScript("arguments[0].scrollIntoView();", MPPTandBattery.get(1));
 		
 		//Press Battery Discharge Button
-		//wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")));
 		MPPTandBattery.get(1).click();//On Battery Discharge button
-		//wait.until(ExpectedConditions.presenceOfElementLocated(By.className("led blinking not-connected")));
-		//Thread.sleep(5000);
-		
 		
 		ngDriver.waitForAngularRequestsToFinish();
-		//condition 1:checking Battery status blinking or not
-		ActualBatteryStatusBlink=driver.findElement(By.xpath("//div[@ng-class=\"pos\"]/div[@ng-class=\"value.position\"]/div[2]")).getAttribute("class");
-		ExpectedBatteryStatusBlink="led";//class="led" for not blinking for blinking of battery charging 
-		Assert.assertEquals(ActualBatteryStatusBlink, ExpectedBatteryStatusBlink, "During Battery Discharge Battery Status Should be not blinking but its blinkig");
 		
-		//condition 2:check top right status bar shows in progrss
-		//wait.until(ExpectedConditions.textToBe(By.xpath(".//li[@class=\"nav-item\"]/div[@class=\"nav-link active\"]/span[@class=\"ng-scope\"]"), ".  In progress"));
+		//condition 1:check top right status bar shows "in progrss"
+
 		String ActualBarStatus=driver.findElement(By.xpath(".//li[@class=\"nav-item\"]/div[@class=\"nav-link active\"]/span[@class=\"ng-scope\"]")).getText();
 		Assert.assertEquals(ActualBarStatus, ". In progress","Battery Discharge status at top bar");
 		
-		//Condition 3:expected content console content
+		//Condition 2:expected content console content
 		ExpectedConsoleMPPTStatus="Default Battery Discharge upto 10.1. Please click on the button again to stop Discharge process..";
 		console=Console();
 		//Assert.assertEquals(console[console.length-1],ExpectedConsoleMPPTStatus,"After Battery Discharge");
 		if(!console[console.length-1].contains("Default Battery Discharge upto 10.1. Please click on the button again to stop Discharge process"))
 		{
-			Assert.assertTrue(true, "After discharge in console Discharge message is not displyaing");
+			Assert.assertTrue(false, "After discharge in console Discharge message is not displyaing");
 		}
 		
 		Thread.sleep(5000);
 		
-		System.out.println(driver.findElement(By.xpath(".//div[@ng-if=\"value.label\" and @style=\"width:160px\" and @class=\"led-label ng-binding ng-scope\" and @ng-bind-html=\"value.label | newlines\"]")).getText());
+		//System.out.println(driver.findElement(By.xpath(".//div[@ng-if=\"value.label\" and @style=\"width:160px\" and @class=\"led-label ng-binding ng-scope\" and @ng-bind-html=\"value.label | newlines\"]")).getText());
 		SystemData=SystemStatus();
 		//key=Vin,Iin,Power_in,Vout,Iout,Power_out,Efficiency,[if discharge is on = Battery V,Battery I]
 		String[] DischargeBatterykey= {"Vin","Iin","Power_in","Vout","Iout","Power_out","Efficiency","Battery V","Battery I"};
@@ -336,10 +374,21 @@ public class ConfigureTest {
 			System.out.println("====================\n"+DischargeBatterykey[i]+"="+SystemData.get(DischargeBatterykey[i]));
 		}
 		
-		//condition 4:System status
+		//condition 3:System status
 		if(!(SystemData.get("Iin") <1 && SystemData.get("Power_in")<1 && SystemData.get("Iout") <1 && SystemData.get("Power_out")<1))
 		{
-			Assert.assertTrue(true, "After Discharge Iin,Power_in,Iout,Power_out in System Status is not less than one");
+			Assert.assertTrue(false, "After Discharge Iin,Power_in,Iout,Power_out in System Status is not less than one");
+		}
+		//condition 4:checking Battery status blinking or not
+		if(!(BatteryStatus()==0))
+		{
+			Assert.assertTrue(false, "After Battery Discharge: Battery Charging status is blinking but it should not blink");
+		}
+				
+		//condition 5:Discharge status		
+		if(!(DischargeStatus()==1))
+		{
+			Assert.assertTrue(false, "After Battery Discharge: Battery Disharging status is OFF but it should be ON");
 		}
 		
 		//scroll till discharge button is visible
