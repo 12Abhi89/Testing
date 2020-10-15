@@ -433,12 +433,7 @@ public class ConfigureTest {
 		//scroll till discharge button is visible
 		jsDriver.executeScript("arguments[0].scrollIntoView();", MPPTandBattery.get(1));
 		MPPTandBattery.get(1).click();//off Battery Discharge button
-		try {
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.id("toast-container"), "YES"));//wait until popup window shows yes and cancel
-		}catch(Exception e)
-		{
-			throw new RuntimeException("After Discharge Button is OFF waited 60sec for popup which show YES and Cancel");
-		}
 		driver.findElement(By.xpath(".//button[@ng-click=\"sendPriority()\" and @class=\"btn btn-success\"]")).click();//YES is pressed from the popup appears after pressing discharge button
 		
 		//-----------------------------------------------------------

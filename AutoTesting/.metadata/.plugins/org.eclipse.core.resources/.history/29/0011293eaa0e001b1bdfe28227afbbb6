@@ -329,7 +329,7 @@ public class ConfigureTest {
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]")));
 		}catch(Exception e)
 		{
-			throw new RuntimeException("waited for 60sec for MPPT On button to be available",e);
+			
 		}
 		//This list contains MPPT button and Battery Discharge button
 		List<WebElement> MPPTandBattery=driver.findElements(By.xpath("//button[@class=\"btn btn-primary btn-element  fat-btn\" and @ng-click=\"formsubmit($event,data.allattrib)\"]"));
@@ -340,12 +340,8 @@ public class ConfigureTest {
 		MPPTandBattery.get(0).click();
 		ngDriver.waitForAngularRequestsToFinish();
 		//Condition 1
-		try {
-		//waits till top right status bar shows Ready
+		//waits till top right status bar show Ready
 		wait.until(ExpectedConditions.textToBe(By.xpath(".//li[@class=\"nav-item\"]/div[@class=\"nav-link active\"]/span[@class=\"ng-scope\"]"), ". Ready"));
-		}catch(Exception e)
-		{
-			throw new RuntimeException("after MPPT On button is pressed waited 60sec for top bar to show Ready");		}
 		
 		Thread.sleep(5000);//charge the battery
 		
@@ -360,12 +356,7 @@ public class ConfigureTest {
 		//Condition 3
 		//MPPT Status in console
 		String ExpectedConsoleMPPTStatus="MPPT is ON";
-		try {
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ByAngular.repeater("op in outputTrans track by $index")));
-		}catch(Exception e)
-		{
-			throw new RuntimeException("After MPPT On button is pressed waited 60sec for console to refresh the content ");
-		}
 		console=Console();
 		Assert.assertEquals(console[console.length-1],ExpectedConsoleMPPTStatus,"After MPPT button is ON Console status ");//Checking is Console Showing MPPT is On
 		
@@ -416,7 +407,7 @@ public class ConfigureTest {
 		//condition 3:System status
 		if(!(SystemData.get("Iin") <1 && SystemData.get("Power_in")<1 && SystemData.get("Iout") <1 && SystemData.get("Power_out")<1))
 		{
-			Assert.assertTrue(false, "After Battery Discharge Iin,Power_in,Iout,Power_out in System Status is not less than one");
+			Assert.assertTrue(false, "After Discharge Iin,Power_in,Iout,Power_out in System Status is not less than one");
 		}
 		//condition 4:checking Battery status blinking or not
 		if(!(BatteryStatus()==0))
@@ -433,12 +424,7 @@ public class ConfigureTest {
 		//scroll till discharge button is visible
 		jsDriver.executeScript("arguments[0].scrollIntoView();", MPPTandBattery.get(1));
 		MPPTandBattery.get(1).click();//off Battery Discharge button
-		try {
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.id("toast-container"), "YES"));//wait until popup window shows yes and cancel
-		}catch(Exception e)
-		{
-			throw new RuntimeException("After Discharge Button is OFF waited 60sec for popup which show YES and Cancel");
-		}
 		driver.findElement(By.xpath(".//button[@ng-click=\"sendPriority()\" and @class=\"btn btn-success\"]")).click();//YES is pressed from the popup appears after pressing discharge button
 		
 		//-----------------------------------------------------------
